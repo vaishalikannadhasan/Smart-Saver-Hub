@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SplitSmart</title>
+    <meta name="description" content="Efficient group expense management and smart purchasing">
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <nav class="sidebar">
+            <div class="logo">
+                <div class="logo-icon"><i class="fa-solid fa-wallet"></i></div>
+                <h1>SplitSmart</h1>
+            </div>
+            <ul class="nav-links" id="sidebar-nav-links">
+                <li data-target="budget-view" data-title="Budget Planner" data-subtitle="Track and plan your monthly spending.">
+                    <i class="fa-solid fa-wallet"></i>
+                    <span>Budget Planner</span>
+                </li>
+                <li class="active" data-target="splitter-view" data-title="Expense Splitter" data-subtitle="Smart group expense management.">
+                    <i class="fa-solid fa-users"></i>
+                    <span>Expense Splitter</span>
+                </li>
+                <li data-target="deals-view" data-title="Deals Finder" data-subtitle="AI-powered product recommendations.">
+                    <i class="fa-solid fa-tags"></i>
+                    <span>Deals Finder</span>
+                </li>
+                <li data-target="saved-deals-view" data-title="Saved Deals" data-subtitle="Your bookmarked best deals.">
+                    <i class="fa-solid fa-heart"></i>
+                    <span>Saved Deals</span>
+                </li>
+            </ul>
+            <div class="user-profile" id="sidebar-user-profile" style="flex-direction: column; align-items: stretch;">
+                <button class="btn secondary-btn" id="nav-login-btn">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </button>
+                <div id="logged-in-user-info" style="display: none; align-items: center; gap: 12px;">
+                    <img src="https://i.pravatar.cc/150?img=11" alt="User" class="avatar" id="user-avatar">
+                    <div class="user-info">
+                        <span class="user-name" id="user-display-name">Alex</span>
+                        <span class="user-type" style="cursor: pointer; text-decoration: underline;" id="nav-logout-btn">Logout</span>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="top-nav">
+                <div class="greeting">
+                    <h2 id="page-title">Dashboard</h2>
+                    <p class="subtitle" id="page-subtitle">Welcome back, Alex. Here's your financial overview.</p>
+                </div>
+                <div class="actions">
+                    <button class="icon-btn"><i class="fa-solid fa-bell"></i><span class="badge">3</span></button>
+                    <button class="btn primary-btn">+ Add Transaction</button>
+                    <button class="icon-btn mobile-menu-toggle"><i class="fa-solid fa-bars"></i></button>
+                </div>
+            </header>
+
+            <!-- Views Container -->
+            <div class="views-wrapper">
+                <!-- Budget Planner View -->
+                <section id="budget-view" class="view-section">
+                    <div class="budget-container">
+                        <div class="glass-card summary-card">
+                            <div class="budget-header">
+                                <h3>Monthly Budget</h3>
+                                <button class="btn secondary-btn" id="set-budget-btn">Set Limit</button>
+                            </div>
+                            <div class="stats-grid">
+                                <div class="stat-item">
+                                    <div class="stat-label">Total Budget</div>
+                                    <div class="stat-value" id="total-budget-display">₹0.00</div>
+                                </div>
+                                <div class="stat-item">
+                                    <div class="stat-label">Total Spent</div>
+                                    <div class="stat-value" id="total-spent-display">₹0.00</div>
+                                </div>
+                                <div class="stat-item highlight">
+                                    <div class="stat-label">Remaining</div>
+                                    <div class="stat-value" id="remaining-budget-display">₹0.00</div>
+                                </div>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" id="budget-progress-fill"></div>
+                            </div>
+                        </div>
+
+                        <div class="glass-card new-expense-card">
+                            <h3>Add Spending</h3>
+                            <form id="expense-form" class="expense-form">
+                                <div class="input-group">
+                                    <label>What did you spend on?</label>
+                                    <input type="text" id="expense-desc" class="input-field" placeholder="e.g. Groceries" required>
+                                </div>
+                                <div class="input-group">
+                                    <label>Amount (₹)</label>
+                                    <input type="number" id="expense-amount" class="input-field" placeholder="0.00" step="0.01" required>
+                                </div>
+                                <button type="submit" class="btn primary-btn" style="width:100%;">Add Expense</button>
+                            </form>
+                        </div>
+
+                        <div class="glass-card recent-expenses-card">
+                            <h3>Recent Spending</h3>
+                            <div class="expenses-list" id="budget-expenses-list">
+                                <p class="empty-state">No expenses yet. Add one above!</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Auth View -->
+                <section id="auth-view" class="view-section">
+                    <div class="glass-card" style="max-width: 400px; margin: 40px auto; text-align: center;">
+                        <div class="logo-icon" style="margin: 0 auto 24px auto;"><i class="fa-solid fa-wallet"></i></div>
+                        <h3 id="auth-title">Welcome to SplitSmart</h3>
+                        <p class="subtitle" style="margin-bottom: 32px;">Login or Register to manage your money.</p>
+                        
+                        <div style="display:flex; justify-content:center; gap:16px; margin-bottom:24px;">
+                            <button id="tab-login" class="btn secondary-btn active" style="flex:1;">Login</button>
+                            <button id="tab-register" class="btn secondary-btn" style="flex:1;">Register</button>
+                        </div>
+
+                        <form id="auth-form" style="text-align: left;">
+                            <div class="input-group">
+                                <label>Your Name</label>
+                                <input type="text" id="auth-name" class="input-field" placeholder="e.g. Alex" required>
+                            </div>
+                            <div class="input-group">
+                                <label>Password</label>
+                                <input type="password" id="auth-pass" class="input-field" placeholder="••••••••" required>
+                            </div>
+                            <button type="submit" id="auth-submit-btn" class="btn primary-btn" style="width: 100%; margin-top: 16px;">Login</button>
+                        </form>
+                    </div>
+                </section>
+
+                <!-- Expense Splitter View -->
+                <section id="splitter-view" class="view-section active">
+                    <div class="splitter-container">
+                        <div class="glass-card new-split-card" style="align-self: start;">
+                            <div class="splitter-header">
+                                <h3>Split an Expense</h3>
+                                <p class="subtitle" style="margin-top: 4px;">Who paid and who shared it?</p>
+                            </div>
+                            
+                            <form id="split-form" class="split-form">
+                                <div class="input-group">
+                                    <label>Expense Name</label>
+                                    <input type="text" id="split-desc" class="input-field" placeholder="e.g. Groceries" required>
+                                </div>
+                                
+                                <div class="split-grid">
+                                    <div class="input-group">
+                                        <label>Total Amount (₹)</label>
+                                        <input type="number" id="split-amount" class="input-field" placeholder="0.00" step="0.01" required>
+                                    </div>
+                                    <div class="input-group">
+                                        <label>Paid By</label>
+                                        <input type="text" id="split-payer" class="input-field" placeholder="Payer Name" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="input-group">
+                                    <label>Split With (comma separated names)</label>
+                                    <input type="text" id="split-participants" class="input-field" placeholder="e.g. Alex, John, Sarah" required>
+                                </div>
+                                
+                                <button type="submit" class="btn primary-btn" style="width: 100%; margin-top: 10px;">Calculate Split</button>
+                            </form>
+                        </div>
+                        
+                        <div class="split-results-wrapper" style="display:flex; flex-direction:column; gap:24px;">
+                            <div class="glass-card split-results-card">
+                                <div class="splitter-header">
+                                    <h3>Smart Settlements</h3>
+                                    <p class="subtitle" style="margin-top: 4px;">AI-optimized minimum transactions.</p>
+                                </div>
+                                <div class="balances-list" id="split-balances-list">
+                                    <p class="empty-state">No debts right now. Add an expense to calculate splits.</p>
+                                </div>
+                            </div>
+                            
+                            <div class="glass-card split-history-card">
+                                <h3>Expense History</h3>
+                                <div class="expenses-list" id="split-history-list" style="margin-top: 16px;">
+                                    <p class="empty-state">No recorded expenses.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Best Deals View -->
+                <section id="deals-view" class="view-section">
+                    <div class="deals-header">
+                        <div class="deals-filters" id="deals-filters">
+                            <button class="filter-btn active" data-filter="all">All Deals</button>
+                            <button class="filter-btn" data-filter="electronics">Electronics</button>
+                            <button class="filter-btn" data-filter="groceries">Groceries</button>
+                            <button class="filter-btn" data-filter="footwear">Footwear</button>
+                        </div>
+                    </div>
+                    
+                    <div class="deals-grid" id="deals-grid">
+                        <!-- Deal cards will be generated here -->
+                    </div>
+                </section>
+                <!-- Saved Deals View -->
+                <section id="saved-deals-view" class="view-section">
+                    <div class="deals-grid" id="saved-deals-grid">
+                        <!-- Saved deal cards injected here -->
+                    </div>
+                </section>
+            </div>
+        </main>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/app.js"></script>
+    <script src="js/budget.js"></script>
+    <script src="js/splitter.js"></script>
+    <script src="js/deals.js"></script>
+</body>
+</html>
